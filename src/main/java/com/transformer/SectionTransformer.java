@@ -25,7 +25,7 @@ public class SectionTransformer {
     public Section buildSection(SectionEntity sectionEntity) {
         Section section = new Section();
         return section.setName(sectionEntity.getName())
-                .setCourse(courseTransformer.buildCourse(sectionEntity.getCourse()))
+                .setCourseId(sectionEntity.getCourse().getId())
                 .setLessons(lessonTransformer.buildLessons(sectionEntity.getLessons()));
     }
 
@@ -35,8 +35,7 @@ public class SectionTransformer {
 
     public SectionEntity buildEntity(Section section) {
         SectionEntity entity = new SectionEntity();
-        entity.setName(section.getName())
-                .setCourse(courseTransformer.buildEntity(section.getCourse()));
+        entity.setName(section.getName());
         return entity;
     }
 }

@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.controller.dto.Course;
+import com.controller.dto.SpecificationRequest;
 import com.service.CourseService;
 import com.transformer.CourseTransformer;
 import lombok.Getter;
@@ -42,4 +43,10 @@ public class CourseController {
     public void deleteCourse(@PathVariable(name = "id") Long id) {
         service.deleteCourseById(id);
     }
+
+    @PostMapping("/search")
+    public List<Course> getAllBySpecificstion(@RequestBody SpecificationRequest request) {
+        return transformer.buildCourses(service.findAll(request));
+    }
+
 }

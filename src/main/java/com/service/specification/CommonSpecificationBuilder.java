@@ -1,15 +1,21 @@
 package com.service.specification;
 
 import com.model.BaseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.criteria.Root;
 
-@Component
-public class CommonSpecificationBuilder<T extends BaseEntity> {
-    private Root<T> root;
+public abstract class CommonSpecificationBuilder<T> {
+    private static final String NAME_KEY = "name";
 
-    public CommonSpecificationBuilder(Root root) {
-        this.root = root;
+    public Specification<T> build(SpecificationCriteria criteria) {
+        return Specification.where(buildName(criteria.getName()));
+    }
+
+    protected Specification<T> buildName(String name) {
+        return ObjectUtils.isEmpty(name)
+                ? null
+                : ((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get(NAME_KEY), name + "%"));
     }
 }

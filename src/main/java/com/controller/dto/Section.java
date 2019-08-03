@@ -12,6 +12,6 @@ import java.util.List;
 @Accessors(chain = true)
 public class Section {
     private String name;
-    private Course course;
+    private Long courseId;
     private List<Lesson> lessons = new ArrayList<>();
 }
