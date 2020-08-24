@@ -1,26 +1,18 @@
 package com.controller;
 
 import com.controller.dto.Course;
-import com.controller.dto.SpecificationRequest;
 import com.service.CourseService;
 import com.transformer.CourseTransformer;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequestMapping("/course")
 public class CourseController {
     @Autowired
@@ -29,24 +21,44 @@ public class CourseController {
     private CourseService service;
 
 
-    @GetMapping
-    public List<Course> getCourses() {
-        return transformer.buildCourses(service.findAll());
+    @GetMapping("/list")
+    public String getCourses(Model model) {
+        model.addAttribute("courses", transformer.buildCourses(service.findAll()));
+        return "course-list";
     }
 
-    @PostMapping
-    public void createCourse(@RequestBody Course course) {
+    @GetMapping("/create")
+    public String createCourseForm(Course course) {
+        return "course-create";
+    }
+
+    @PostMapping("/create")
+    public String createCourse(Course course) {
         service.createCourse(transformer.buildEntity(course));
+        return "redirect:/course/list";
     }
 
-    @DeleteMapping(path = "/{id}")
-    public void deleteCourse(@PathVariable(name = "id") Long id) {
+    @GetMapping(path = "/delete/{id}")
+    public String deleteCourse(@PathVariable(name = "id") Long id) {
         service.deleteCourseById(id);
+        return "redirect:/course/list";
     }
 
-    @PostMapping("/search")
-    public List<Course> getAllBySpecificstion(@RequestBody SpecificationRequest request) {
-        return transformer.buildCourses(service.findAll(request));
+    @GetMapping(path = "/update/{id}")
+    public String updateCourseForm(@PathVariable(name = "id") Long id, Model model) {
+        Course course = transformer.buildCourse(service.findById(id));
+        model.addAttribute("course", course);
+        return "course-update";
     }
 
+    @PostMapping("/update")
+    public String updateCourse(Course course) {
+        service.createCourse(transformer.buildEntity(course));
+        return "redirect:/course/list";
+    }
+
+//    @PostMapping("/search")
+//    public List<Course> getAllBySpecification(@RequestBody SpecificationRequest request) {
+//        return transformer.buildCourses(service.findAll(request));
+//    }
 }

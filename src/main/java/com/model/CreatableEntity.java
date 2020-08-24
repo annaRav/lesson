@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import java.util.Date;
 
 @MappedSuperclass
 @EntityListeners(value = DateEntityListener.class)
@@ -18,5 +19,5 @@ import javax.persistence.MappedSuperclass;
 @NoArgsConstructor
 public class CreatableEntity extends BaseEntity {
     @Column(name = "created_date")
-    private Long createdDate;
+    private Date createdDate;
 }

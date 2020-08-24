@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @Accessors(chain = true)
 public class Course {
+    private Long id;
     private Long createdDate;
     private String name;
     private Integer cost;

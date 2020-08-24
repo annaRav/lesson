@@ -24,13 +24,15 @@ public class CourseTransformer {
         Course course = new Course();
         return course.setName(courseEntity.getName())
                 .setCost(courseEntity.getCost())
-                .setSections(transformer.buildSections(courseEntity.getSections()));
+                .setSections(transformer.buildSections(courseEntity.getSections()))
+                .setId(courseEntity.getId());
     }
 
     public CourseEntity buildEntity(Course course) {
         CourseEntity entity = new CourseEntity();
-        return entity.setCost(course.getCost())
+        return (CourseEntity)entity.setCost(course.getCost())
                 .setName(course.getName())
-                .setSections(transformer.buildEntites(course.getSections()));
+                .setSections(transformer.buildEntites(course.getSections()))
+                .setId(course.getId());
     }
 }
